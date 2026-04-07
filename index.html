@@ -153,6 +153,22 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
+      z-index: 1;
+      /* Above the fallback image */
+    }
+
+    /* Fallback image behind the video */
+    .env-seal-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -58%);
+      /* Match seal zone position */
+      width: min(45vw, 45vh, 260px);
+      height: auto;
+      z-index: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
     }
 
     #envelopeCover::after {
@@ -216,6 +232,7 @@
     .tap-hint.mobile-hint {
       bottom: clamp(155px, 24vh, 220px);
       left: 50%;
+      margin-bottom: 20px;
       transform: translateX(-50%);
       flex-direction: column;
     }
@@ -1706,6 +1723,9 @@
      ENVELOPE COVER
 ══════════════════════════════════ -->
   <div id="envelopeCover">
+    <!-- Static seal image is mounted strictly behind the video. If the video fails, this renders beautifully! -->
+    <img src="./image/seal.png" class="env-seal-img" alt="Wax Seal">
+
     <video id="envVideo" class="env-video" src="./image/envelope_mobile.mp4" muted playsinline></video>
 
     <!-- Fallback button for slow/failed video -->
@@ -2102,16 +2122,36 @@
 
     function applyGuestPersonalization() {
       if (!window.GUEST) return;
-      const { displayName } = window.GUEST;
+      const { fullLabel, relation } = window.GUEST;
 
       /* 1. Envelope label — fade in smoothly, letter-by-letter name */
       const envLabel = document.getElementById('guestEnvLabel');
       const envName = document.getElementById('guestEnvName');
       if (envLabel && envName && envLabel.style.opacity !== '1') {
         envLabel.style.display = 'block';
-        envName.innerHTML = [...displayName].map((ch, i) =>
-          `<span class="letter" style="animation-delay:${i * 80 + 800}ms">${ch === ' ' ? '&nbsp;' : ch}</span>`
-        ).join('');
+
+        let htmlContent = '';
+        let charIndex = 0;
+
+        htmlContent += [...fullLabel].map((ch) => {
+          let delay = charIndex * 60 + 800;
+          charIndex++;
+          return `<span class="letter" style="animation-delay:${delay}ms">${ch === ' ' ? '&nbsp;' : ch}</span>`;
+        }).join('');
+
+        if (relation) {
+          htmlContent += `<div style="font-size: 0.65em; margin-top: 4px; color: rgba(42, 15, 26, 0.85); font-weight: 600;">`;
+          const relStr = `& ${relation}`;
+          htmlContent += [...relStr].map((ch) => {
+            let delay = charIndex * 60 + 800;
+            charIndex++;
+            return `<span class="letter" style="animation-delay:${delay}ms">${ch === ' ' ? '&nbsp;' : ch}</span>`;
+          }).join('');
+          htmlContent += `</div>`;
+        }
+
+        envName.innerHTML = htmlContent;
+
         // One tick later so CSS transition fires
         requestAnimationFrame(() => requestAnimationFrame(() => {
           envLabel.style.opacity = '1';
@@ -2122,7 +2162,11 @@
       const greet = document.getElementById('guestGreeting');
       const greetTxt = document.getElementById('guestGreetingText');
       if (greet && greetTxt) {
-        greetTxt.textContent = `${displayName}, you are warmly invited`;
+        if (relation) {
+          greetTxt.innerHTML = `${fullLabel} <br><span style="font-size:0.85em; opacity:0.9;">& ${relation}</span> <br>you are warmly invited`;
+        } else {
+          greetTxt.textContent = `${fullLabel}, you are warmly invited`;
+        }
         greet.style.display = 'block';
       }
 
@@ -2130,7 +2174,11 @@
       const farewell = document.getElementById('guestFarewell');
       const farewellName = document.getElementById('guestFarewellName');
       if (farewell && farewellName) {
-        farewellName.textContent = displayName;
+        if (relation) {
+          farewellName.innerHTML = `${fullLabel} <br><span style="font-size:0.75em; opacity:0.8;">& ${relation}</span>`;
+        } else {
+          farewellName.textContent = fullLabel;
+        }
         farewell.style.display = 'block';
       }
 
