@@ -947,6 +947,16 @@
       width: auto;
     }
 
+    .map-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg,
+          rgba(30, 36, 56, 0.55) 0%,
+          rgba(46, 53, 81, 0.35) 40%,
+          rgba(30, 36, 56, 0.5) 100%);
+    }
+
     .bus-info {
       font-family: 'Cinzel', serif;
       font-size: 0.82rem;
@@ -1208,21 +1218,108 @@
       transition-delay: 0.6s;
     }
 
-    /* ─── RESPONSIVE ─── */
+    /* ─── RESPONSIVE MOBILE ─── */
     @media(max-width:768px) {
       section {
-        padding: 80px 20px;
+        padding: 40px 16px;
+      }
+
+      /* ── Countdown: single inline row ── */
+      .cd-grid {
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding: 0 2px;
+      }
+
+      .cd-item {
+        flex: 1;
+        min-width: 0;
+        padding: 12px 4px;
+      }
+
+      .cd-num {
+        font-size: clamp(1.8rem, 7.5vw, 2.6rem);
+      }
+
+      .cd-lbl {
+        font-size: 0.45rem;
+        letter-spacing: 1px;
+        margin-top: 5px;
+      }
+
+      /* ── Celebration Details: side-by-side with gold left border ── */
+      .timing-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
       }
 
       .timing-card {
-        min-width: 100%;
-        border-left: 0 !important;
+        min-width: 0;
+        padding: 24px 14px;
+        border: none;
+        border-left: 4px solid var(--rg-gold2);
+        border-top: 1px solid rgba(184,115,42,0.2);
+        border-bottom: 1px solid rgba(184,115,42,0.2);
+        position: relative;
+        background: rgba(255,255,255,0.05);
       }
 
+      /* Gold top accent per card */
+      .timing-card::before {
+        display: none;
+      }
+
+      .timing-card:first-child {
+        border-right: 1px solid rgba(184,115,42,0.2);
+        border-radius: 4px 0 0 4px;
+      }
+
+      .timing-card:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+
+      .tc-title {
+        font-size: clamp(1.8rem, 5vw, 2.4rem);
+        margin-bottom: 8px;
+      }
+
+      .tc-time {
+        font-size: 0.72rem;
+        letter-spacing: 0.5px;
+      }
+
+      /* ── Tighten subtitle space everywhere ── */
+      .sec-subtitle {
+        margin-bottom: 24px;
+      }
+
+      /* ── Venue section ── */
+      .venue-details {
+        margin-top: 28px;
+        font-size: 1rem;
+        line-height: 1.9;
+      }
+
+      .venue-name {
+        font-size: clamp(1.3rem, 4vw, 1.8rem);
+        margin: 10px 0;
+      }
+
+      /* ── Parents & elders ── */
       .parents-box {
-        padding: 40px 24px;
+        padding: 28px 16px;
       }
 
+      .elders-panel {
+        padding: 24px 16px 18px;
+      }
+
+      .elders-grid {
+        gap: 10px 20px;
+      }
+
+      /* ── Gallery ── */
       .gal-grid {
         grid-template-columns: 1fr;
       }
@@ -1230,13 +1327,21 @@
       .gal-item {
         aspect-ratio: 4/3;
       }
+
+      /* ── Footer tighter ── */
+      .footer-compliments {
+        padding: 40px 16px 36px;
+      }
+
+      .dua-bar {
+        padding: 32px 16px;
+      }
     }
 
     @media(max-width:480px) {
-
       .n-bride,
       .n-groom {
-        font-size: clamp(3rem, 14vw, 5rem);
+        font-size: clamp(2.6rem, 12vw, 4rem);
       }
     }
 
@@ -1535,6 +1640,43 @@
     .cal-btn i {
       font-size: 1rem;
     }
+
+    /* ─── VIDEO FALLBACK BUTTON ─── */
+    .video-fallback-btn {
+      position: absolute;
+      top: 62%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 30;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #2E3551 0%, #3D5080 100%);
+      border: 1.5px solid var(--rg-gold2);
+      color: var(--rg-gold2);
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.6s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+    }
+
+    .video-fallback-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+      top: 60%;
+    }
+
+    .video-fallback-btn:hover {
+      background: var(--rg-gold2);
+      color: var(--rg-dark);
+      box-shadow: 0 0 20px var(--rg-gold2);
+    }
   </style>
 </head>
 
@@ -1564,6 +1706,9 @@
 ══════════════════════════════════ -->
   <div id="envelopeCover">
     <video id="envVideo" class="env-video" src="./image/envelope_mobile.mp4" muted playsinline></video>
+
+    <!-- Fallback button for slow/failed video -->
+    <button id="videoFallbackBtn" class="video-fallback-btn" onclick="skipToInvite()">Enter Invitation</button>
 
     <!-- Invisible clickable circle over the wax seal -->
     <div class="seal-zone" id="tapCue" onclick="openEnvelope()"></div>
@@ -1620,7 +1765,7 @@
             most Merciful</span></p>
         <div class="couple-names">
           <span class="n-bride reveal reveal-left reveal-delay-3">B. Mofitha<span class="degrees">B.E.
-              (C.Sc.,)</span></span>
+              (CSE)</span></span>
           <span class="n-amp reveal reveal-delay-4">&amp;</span>
           <span class="n-groom reveal reveal-right reveal-delay-3">Z.A. Mohamed Nowsath Ali<span
               class="degrees">M.C.A.</span></span>
@@ -1810,6 +1955,8 @@
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3885.8724333080177!2d80.24560749999999!3d13.107266899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5265007731cdef%3A0x72c1eb7226c92b1e!2sAnnal%20Ambedkar%20Thirumana%20Maaligai!5e0!3m2!1sen!2sin!4v1775295340394!5m2!1sen!2sin"
             width="100%" height="450" style="border:0;display:block;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="map-overlay"></div>
+
         </div>
         <div class="bus-info reveal reveal-delay-4">
           <strong class="t" data-key="bus_from">Bus from Koyembedu:</strong> 46, 46G, 29E<br>
@@ -2287,7 +2434,7 @@
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
       camera.position.z = 600;
 
-      // ── Circular sprite texture (drawn on a 2D canvas) ──
+      // ── Circular sprite texture (drawn on a 2d canvas) ──
       function makeStarTexture(size, inner, outer, color) {
         const c = document.createElement('canvas');
         c.width = c.height = size;
@@ -2312,17 +2459,7 @@
 
       // ── Star particle system ──
       const STAR_COUNT = 1000;
-      const positions = new Float32Array(STAR_COUNT * 3);
-      const phases = new Float32Array(STAR_COUNT);  // twinkle phase
-      const speeds = new Float32Array(STAR_COUNT);  // twinkle speed
-      const sizes = new Float32Array(STAR_COUNT);
-      const starMeshes = [];
-
-      // Spread range
       const SPREAD = 900;
-
-      // We use individual Points (one per star) so each can twinkle independently
-      // Group them into 3 batches for the 3 textures
       const BATCH = Math.floor(STAR_COUNT / 3);
 
       function makeStarPoints(count, texture, sizeRange, zRange) {
@@ -2509,7 +2646,33 @@
     // Show envelope guest label immediately (before opening) — will fade in via CSS
     applyGuestPersonalization();
 
-    function openEnvelope() {
+    let fallbackVisible = false;
+
+    function showVideoFallback() {
+      if (opened || fallbackVisible) return;
+      fallbackVisible = true;
+      const btn = document.getElementById('videoFallbackBtn');
+      if (btn) btn.classList.add('visible');
+    }
+
+    // Monitor for video load issues (poor network)
+    const envVideo = document.getElementById('envVideo');
+    if (envVideo) {
+      envVideo.onerror = showVideoFallback;
+      envVideo.onstalled = showVideoFallback;
+      // If video hasn't reached readyState 3 (can play) in 7 seconds, show fallback
+      setTimeout(() => {
+        if (envVideo.readyState < 3 && !opened) showVideoFallback();
+      }, 7000);
+    }
+
+    function skipToInvite() {
+      if (opened) return;
+      // Proceed directly to reveal
+      openEnvelope(true);
+    }
+
+    function openEnvelope(forceSkip = false) {
       if (opened) return; opened = true;
       const envVideo = document.getElementById('envVideo');
       const cover = document.getElementById('envelopeCover');
@@ -2518,22 +2681,23 @@
       const hintM = document.getElementById('tapHint');
       const hintD = document.getElementById('tapHintDesktop');
       const bloom = document.getElementById('openBloom');
+      const fallbackBtn = document.getElementById('videoFallbackBtn');
 
-      // Fade out seal zone + both hint labels together
-      const toHide = [cue, hintM, hintD].filter(Boolean);
+      // Hide everything on envelope immediately
+      const toHide = [cue, hintM, hintD, fallbackBtn].filter(Boolean);
       gsap.to(toHide, {
         duration: 0.4, opacity: 0, ease: 'power2.out', onComplete: () => {
           toHide.forEach(el => { el.style.pointerEvents = 'none'; el.style.display = 'none'; });
         }
       });
 
-      // Start music on user interaction (satisfies autoplay policy)
+      // Start music on user interaction
       initMusic();
 
-      // Play video
-      envVideo.play().catch(() => { });
+      const doReveal = () => {
+        if (doReveal.done) return;
+        doReveal.done = true;
 
-      function doReveal() {
         // Step 1 — apply language & personalisation into invisible page
         const lang = getLangFromURL();
         setLanguage(lang);
@@ -2562,11 +2726,17 @@
             setTimeout(startAutoScroll, 2000);
           }, 300);
         }, 250);
-      }
+      };
 
-      envVideo.onended = doReveal;
-      // Safety fallback
-      setTimeout(() => { if (!page.classList.contains('visible')) doReveal(); }, 8000);
+      if (forceSkip) {
+        doReveal();
+      } else {
+        // Play video then reveal
+        envVideo.play().catch(() => { });
+        envVideo.onended = doReveal;
+        // Absolute safety fallback
+        setTimeout(() => { if (!page.classList.contains('visible')) doReveal(); }, 8000);
+      }
     }
 
     /* ══════════════════════════════════════════════════
