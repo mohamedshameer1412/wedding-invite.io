@@ -1259,10 +1259,10 @@
         padding: 24px 14px;
         border: none;
         border-left: 4px solid var(--rg-gold2);
-        border-top: 1px solid rgba(184,115,42,0.2);
-        border-bottom: 1px solid rgba(184,115,42,0.2);
+        border-top: 1px solid rgba(184, 115, 42, 0.2);
+        border-bottom: 1px solid rgba(184, 115, 42, 0.2);
         position: relative;
-        background: rgba(255,255,255,0.05);
+        background: rgba(255, 255, 255, 0.05);
       }
 
       /* Gold top accent per card */
@@ -1271,7 +1271,7 @@
       }
 
       .timing-card:first-child {
-        border-right: 1px solid rgba(184,115,42,0.2);
+        border-right: 1px solid rgba(184, 115, 42, 0.2);
         border-radius: 4px 0 0 4px;
       }
 
@@ -1339,6 +1339,7 @@
     }
 
     @media(max-width:480px) {
+
       .n-bride,
       .n-groom {
         font-size: clamp(2.6rem, 12vw, 4rem);
@@ -1858,16 +1859,16 @@
         <div class="parents-box reveal reveal-left reveal-delay-2">
           <div class="parents-title t" data-key="bride_family" style="margin-bottom:15px;">Bride's Family</div>
 
-          <div style="margin-bottom:20px;">
+          <div style="margin-bottom:10px;">
             <strong>Mrs. Shakeela Basheer</strong><br>
             <span
               style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:1px;color:var(--rg-mid);text-transform:uppercase;font-weight:600;">Bride's
               Mother</span>
           </div>
 
-          <em style="color:var(--rg-gold);font-size:1.6rem;display:inline-block;margin-bottom:20px;">&amp;</em>
+          <em style="color:var(--rg-gold);font-size:1.6rem;display:inline-block;margin-bottom:10px;">&amp;</em>
 
-          <div style="margin-bottom:30px;">
+          <div style="margin-bottom:20px;">
             <strong>Acu. Healer, Prof. <br>Mr. R. Basheer Basha</strong><br>
             <span
               style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:1px;color:var(--rg-gold);font-weight:700;">B.Sc.,
@@ -1886,16 +1887,16 @@
         <div class="parents-box reveal reveal-right reveal-delay-2">
           <div class="parents-title t" data-key="groom_family" style="margin-bottom:15px;">Groom's Family</div>
 
-          <div style="margin-bottom:20px;">
+          <div style="margin-bottom:10px;">
             <strong>Mrs. J. Jameem Nisha</strong><br>
             <span
               style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:1px;color:var(--rg-mid);text-transform:uppercase;font-weight:600;">Groom's
               Mother</span>
           </div>
 
-          <em style="color:var(--rg-gold);font-size:1.6rem;display:inline-block;margin-bottom:20px;">&amp;</em>
+          <em style="color:var(--rg-gold);font-size:1.6rem;display:inline-block;margin-bottom:10px;">&amp;</em>
 
-          <div style="margin-bottom:30px;">
+          <div style="margin-bottom:20;">
             <strong>Mr. M.Z. Thamimul Ansar Ali</strong><br>
             <span
               style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:1px;color:var(--rg-mid);text-transform:uppercase;font-weight:600;display:inline-block;margin-top:2px;">Groom's
@@ -1910,8 +1911,8 @@
         <!-- ── UNCLES PANEL (Full Width at Bottom) ── -->
         <div class="parents-box full-width reveal reveal-up reveal-delay-3"
           style="border-top:1px solid rgba(184,115,42,0.2);">
-          <div class="elders-eyebrow" style="margin-bottom:20px;">With Love from Uncles</div>
-          <div class="elders-grid" style="gap:40px;">
+          <div class="elders-eyebrow" style="margin-bottom:15px;">With Love from Uncles</div>
+          <div class="elders-grid" style="gap:20px;">
             <div class="elder-item">
               <strong>Mr. R. Mohamed Ismail</strong>
               <span class="elder-role">Bride's Uncle</span>
@@ -2085,24 +2086,27 @@
       const params = new URLSearchParams(window.location.search);
       const gRaw = params.get('guest');
       const pRaw = params.get('prefix');
+      const rRaw = params.get('relation');
       if (!gRaw) return;
       const name = b64decode(gRaw);
       const prefix = pRaw ? b64decode(pRaw) : '';
+      const relation = rRaw ? b64decode(rRaw) : '';
       if (!name) return;
       const fullLabel = prefix ? `${prefix} ${name}` : name;
-      window.GUEST = { prefix, name, fullLabel };
+      const displayName = relation ? `${fullLabel} & ${relation}` : fullLabel;
+      window.GUEST = { prefix, name, relation, fullLabel, displayName };
     })();
 
     function applyGuestPersonalization() {
       if (!window.GUEST) return;
-      const { fullLabel } = window.GUEST;
+      const { displayName } = window.GUEST;
 
       /* 1. Envelope label — fade in smoothly, letter-by-letter name */
       const envLabel = document.getElementById('guestEnvLabel');
       const envName = document.getElementById('guestEnvName');
       if (envLabel && envName && envLabel.style.opacity !== '1') {
         envLabel.style.display = 'block';
-        envName.innerHTML = [...fullLabel].map((ch, i) =>
+        envName.innerHTML = [...displayName].map((ch, i) =>
           `<span class="letter" style="animation-delay:${i * 80 + 800}ms">${ch === ' ' ? '&nbsp;' : ch}</span>`
         ).join('');
         // One tick later so CSS transition fires
@@ -2115,7 +2119,7 @@
       const greet = document.getElementById('guestGreeting');
       const greetTxt = document.getElementById('guestGreetingText');
       if (greet && greetTxt) {
-        greetTxt.textContent = `${fullLabel}, you are warmly invited`;
+        greetTxt.textContent = `${displayName}, you are warmly invited`;
         greet.style.display = 'block';
       }
 
@@ -2123,7 +2127,7 @@
       const farewell = document.getElementById('guestFarewell');
       const farewellName = document.getElementById('guestFarewellName');
       if (farewell && farewellName) {
-        farewellName.textContent = fullLabel;
+        farewellName.textContent = displayName;
         farewell.style.display = 'block';
       }
 
