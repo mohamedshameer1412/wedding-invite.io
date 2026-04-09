@@ -1335,8 +1335,8 @@
                 document.getElementById('encodedRelRow').style.display = 'none';
             }
 
-            const self = ['mofitha', 'nowsath ali', 'mofitha & nowsath ali'].includes(urself.toLowerCase()) ? '' : `\n\n${fullLabel}\nI cordially request you to come in person and bless the bride and groom, with your family, Thank you!!`;
-            const msg = `Assalamu Alaikum \n\Dear *${fullLabel}*\,\n\nYou are warmly invited,\n*${urself}* - wedding on Sunday,\n3rd May 2026.\n\nYour personal invitation:\n${_currentUrl}${self}`
+            const self = ['mofitha', 'nowsath ali', 'mofitha & nowsath ali'].includes(urself.toLowerCase()) ? '' : `\n\n*${fullLabel}*\nI cordially request you to come in person and bless the bride and groom, with your family, Thank you!!`;
+            const msg = `Assalamu Alaikum \n*Dear ${fullLabel}*\,\n\nYou are warmly invited,\n*${urself}* - wedding on *Sunday*,\n*3rd May 2026*.\n\nYour personal invitation:\n${_currentUrl}${self}`
 
             // console.log(msg)
             // WhatsApp link
