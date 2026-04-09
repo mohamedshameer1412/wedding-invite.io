@@ -926,9 +926,9 @@
                         <option value="Mofitha">Mofitha</option>
                         <option value="Nowsath Ali">Nowsath Ali</option>
                         <option value="Mofitha & Nowsath Ali">Mofitha & Nowsath Ali</option>
-                        <option
-                            value="Acu. Healer, Prof. R. Basheer Basha and Mrs. Shakeela Basheer's Daughter Mofitha">
-                            Acu. Healer, Prof. R. Basheer Basha and Mrs. Shakeela Basheer's Daughter Mofitha</option>
+                        <option value="basheer">
+                            Acu. Healer,<br> Prof. R. Basheer Basha and Mrs. Shakeela Basheer's Daughter Mofitha
+                        </option>
                         <option value="Miss. Rizwana Basheer's Elder Sister Mofitha ">Miss. Rizwana Basheer's Elder
                             Sister Mofitha
                         </option>
@@ -1297,7 +1297,7 @@
         let _currentUrl = '';
 
         function generateSingle() {
-            const urself = document.getElementById('Urself').value.trim();
+            let urself = document.getElementById('Urself').value.trim();
             const prefix = document.getElementById('guestPrefix').value.trim();
             const name = document.getElementById('guestName').value.trim();
             const relation = document.getElementById('guestRelation').value.trim();
@@ -1336,7 +1336,10 @@
             }
 
             const self = ['mofitha', 'nowsath ali', 'mofitha & nowsath ali'].includes(urself.toLowerCase()) ? '' : `\n\n*${fullLabel}*\nI cordially request you to come in person and bless the bride and groom, with your family, Thank you!!`;
-            const msg = `Assalamu Alaikum \n*Dear ${fullLabel}*\,\n\nYou are warmly invited,\n*${urself}* - wedding on *Sunday*,\n*3rd May 2026*.\n\nYour personal invitation:\n${_currentUrl}${self}`
+
+            urself = ['basheer'].includes(urself.toLowerCase()) ? 'Acu. Healer,\nProf. R. Basheer Basha & Mrs. Shakeela Basheer\'s Daughter Mofitha' : urself;
+
+            const msg = `Assalamu Alaikum \n\Dear *${fullLabel}*\,\n\nYou are warmly invited,\n*${urself}* - wedding on Sunday,\n3rd May 2026.\n\nYour personal invitation:\n${_currentUrl}${self}`
 
             // console.log(msg)
             // WhatsApp link
