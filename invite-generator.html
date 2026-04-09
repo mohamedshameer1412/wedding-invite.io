@@ -926,10 +926,10 @@
                         <option value="Mofitha">Mofitha</option>
                         <option value="Nowsath Ali">Nowsath Ali</option>
                         <option value="Mofitha & Nowsath Ali">Mofitha & Nowsath Ali</option>
-                        <option value="Acu. Healer, Prof. R. Basheer Basha and Mrs. ShaKeela Basheer's Daughter Mofitha  — Wedding Invitation">Acu. Healer, Prof. R. Basheer Basha and Mrs. ShaKeela Basheer's Daughter Mofitha  — Wedding Invitation</option>
-                        <option value="Miss. Rizwana Basheer's Elder Sister">Miss. Rizwana Basheer's Elder Sister
+                        <option value="Acu. Healer, Prof. R. Basheer Basha and Mrs. ShaKeela Basheer's Daughter Mofitha">Acu. Healer, Prof. R. Basheer Basha and Mrs. ShaKeela Basheer's Daughter Mofitha  — Wedding Invitation</option>
+                        <option value="Miss. Rizwana Basheer's Elder Sister Mofitha ">Miss. Rizwana Basheer's Elder Sister
                         </option>
-                        <option value="Mr. Shameer's Elder Sister">Mr. Shameer's Elder Sister</option>
+                        <option value="Mr. Shameer's Elder Sister Mofitha">Mr. Shameer's Elder Sister</option>
                     </select>
                 </div>
 
@@ -940,6 +940,7 @@
                         <option value="Mr.">Mr.</option>
                         <option value="Mrs.">Mrs.</option>
                         <option value="Dr.">Dr.</option>
+                        <option value="Acu. Healer">Acu. Healer</option>
                         <option value="Prof.">Prof.</option>
                         <option value="Miss">Miss</option>
                     </select>
@@ -1333,7 +1334,7 @@
 
             // WhatsApp link
             const waMsg = encodeURIComponent(
-                `Assalamu Alaikum \n\Dear *${fullLabel}*\,\n\nYou are cordially invited to the Nikkah of\n*${urself}*\non Sunday, 3rd May 2026.\n\nYour personal invitation:\n${_currentUrl}\n\n${fullLabel}\nI cordially request you to come in person and bless the bride and groom, with your family,\nThank you!!`
+                `Assalamu Alaikum \n\Dear *${fullLabel}*\,\n\nYou are warmly invited,\n*${urself}*\n - wedding on Sunday, 3rd May 2026.\n\nYour personal invitation:\n${_currentUrl}\n\n${fullLabel}\nI cordially request you to come in person and bless the bride and groom, with your family,\nThank you!!`
             );
             document.getElementById('btnWA').href = `https://wa.me/?text=${waMsg}`;
             document.getElementById('btnPreview').href = _currentUrl;
@@ -1379,7 +1380,7 @@
         let _sheetRowCount = 0;
         let _batchData = [];
 
-        const PREFIXES = ['', 'Mr.', 'Mrs.', 'Dr.', 'Prof.', 'Hj.', 'Hjh.', 'Ustaz', 'Ustazah', 'Er.', 'Ar.', 'Master', 'Miss'];
+        const PREFIXES = ['', 'Mr.', 'Mrs.', 'Dr.', 'Prof.','Acu. Healer', 'Miss'];
         const LANGS = { en: 'English', ta: 'Tamil', te: 'Telugu', hi: 'Hindi' };
 
         function prefixOptions(sel) {
