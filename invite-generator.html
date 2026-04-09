@@ -920,6 +920,23 @@
                 <div class="panel-title"><i class="fas fa-pen-nib"></i> Guest Details</div>
 
                 <div class="form-group">
+                    <label>Your self <span style="color:rgba(245,235,246,0.35);">(optional)</span></label>
+                    <select id="Urself">
+                        <option value="">(No prefix)</option>
+                        <option value="Mofitha">Mofitha</option>
+                        <option value="Nowsath Ali">Nowsath Ali</option>
+                        <option value="Mofitha & Nowsath Ali">Mofitha & Nowsath Ali</option>
+                        <option value="Acu. Healer, Prof. Mr. Basheer Basha's Daughter">Acu. Healer, Prof. Mr. Basheer
+                            Basha's Daughter</option>
+                        <option value="Mrs. ShaKeela Basheer's Daughter">Mrs. ShaKeela Basheer's Daughter</option>
+                        <option value="Mrs. Shareena Basheer's Daughter">Mrs. Shareena Basheer's Daughter</option>
+                        <option value="Miss. Rizwana Basheer's Elder Sister">Miss. Rizwana Basheer's Elder Sister
+                        </option>
+                        <option value="Mr. Shameer's Elder Sister">Mr. Shameer's Elder Sister</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label>Prefix <span style="color:rgba(245,235,246,0.35);">(optional)</span></label>
                     <select id="guestPrefix">
                         <option value="">(No prefix)</option>
@@ -927,13 +944,6 @@
                         <option value="Mrs.">Mrs.</option>
                         <option value="Dr.">Dr.</option>
                         <option value="Prof.">Prof.</option>
-                        <option value="Hj.">Hj.</option>
-                        <option value="Hjh.">Hjh.</option>
-                        <option value="Ustaz">Ustaz</option>
-                        <option value="Ustazah">Ustazah</option>
-                        <option value="Er.">Er.</option>
-                        <option value="Ar.">Ar.</option>
-                        <option value="Master">Master</option>
                         <option value="Miss">Miss</option>
                     </select>
                 </div>
@@ -945,13 +955,25 @@
 
                 <div class="form-group">
                     <label>Relation / Group <span style="color:rgba(245,235,246,0.35);">(optional)</span></label>
-                    <input type="text" id="guestRelation" placeholder="e.g. Family, Mr & Mrs, Colleagues" />
+                    <select id="guestRelation">
+                        <option value="">(No prefix)</option>
+                        <option value="Family">Family</option>
+                        <option value="Family & Friends">Family & Friends</option>
+                        <option value="Friends">Friends</option>
+                        <option value="Brother">Brother</option>
+                        <option value="Sister">Sister</option>
+                        <option value="Cousin">Cousin</option>
+                        <option value="Aunt">Aunt</option>
+                        <option value="Uncle">Uncle</option>
+                        <option value="Mr & Mrs">Mr & Mrs</option>
+                        <option value="Colleagues">Colleagues</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label>Base URL (invitation file path)</label>
-                    <input type="text" id="baseUrl" value="https://mohamedshameer1412.github.io/wedding-invite.io"
-                        placeholder="https://mohamedshameer1412.github.io/wedding-invite.io" readonly/>
+                    <input type="text" id="baseUrl" value="https://brzp04zx-3000.inc1.devtunnels.ms"
+                        placeholder="https://brzp04zx-3000.inc1.devtunnels.ms" />
                 </div>
 
                 <div class="form-group">
@@ -1048,7 +1070,8 @@
                     <button class="btn-export" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
                     <button class="btn-export" onclick="copyAllUrls()"><i class="fas fa-copy"></i> Copy URLs</button>
                 </div>
-                <span id="batchCount" style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:rgba(216,173,131,0.5);margin-left:auto;"></span>
+                <span id="batchCount"
+                    style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:rgba(216,173,131,0.5);margin-left:auto;"></span>
             </div>
 
             <!-- Spreadsheet Table -->
@@ -1071,7 +1094,8 @@
             </div>
             <p style="font-size:0.82rem;color:rgba(245,235,246,0.35);font-style:italic;margin-top:10px;">
                 <i class="fas fa-circle-info" style="color:var(--gold);margin-right:5px;"></i>
-                Fill rows then click <strong style="color:var(--light);">Generate All Links</strong>. URL column fills automatically. Export CSV is ready for your Python send script.
+                Fill rows then click <strong style="color:var(--light);">Generate All Links</strong>. URL column fills
+                automatically. Export CSV is ready for your Python send script.
             </p>
         </div>
 
@@ -1272,6 +1296,7 @@
         let _currentUrl = '';
 
         function generateSingle() {
+            const urself = document.getElementById('Urself').value.trim();
             const prefix = document.getElementById('guestPrefix').value.trim();
             const name = document.getElementById('guestName').value.trim();
             const relation = document.getElementById('guestRelation').value.trim();
@@ -1311,7 +1336,7 @@
 
             // WhatsApp link
             const waMsg = encodeURIComponent(
-                `Assalamu Alaikum \n\*${fullLabel}*\,\n\nYou are cordially invited to the Nikkah of\n*Mofitha & Mohamed Nowsath Ali*\non Sunday, 3rd May 2026.\n\nYour personal invitation:\n${_currentUrl}\n\n*${fullLabel}*\nI cordially request you to come in person and bless the bride and groom, with your family, Thank you!!`
+                `Assalamu Alaikum \n\Dear *${fullLabel}*\,\n\nYou are cordially invited to the Nikkah of\n*${urself}*\non Sunday, 3rd May 2026.\n\nYour personal invitation:\n${_currentUrl}\n\n${fullLabel}\nI cordially request you to come in person and bless the bride and groom, with your family,\nThank you!!`
             );
             document.getElementById('btnWA').href = `https://wa.me/?text=${waMsg}`;
             document.getElementById('btnPreview').href = _currentUrl;
@@ -1405,11 +1430,11 @@
             rows.forEach(tr => {
                 const id = tr.id.replace('sr-', '');
                 const prefix = document.getElementById(`sp-${id}`).value.trim();
-                const name   = document.getElementById(`sn-${id}`).value.trim();
-                const group  = document.getElementById(`sg-${id}`).value.trim();
-                const phone  = document.getElementById(`sh-${id}`).value.trim();
-                const lang   = document.getElementById(`sl-${id}`).value;
-                const urlEl  = document.getElementById(`su-${id}`);
+                const name = document.getElementById(`sn-${id}`).value.trim();
+                const group = document.getElementById(`sg-${id}`).value.trim();
+                const phone = document.getElementById(`sh-${id}`).value.trim();
+                const lang = document.getElementById(`sl-${id}`).value;
+                const urlEl = document.getElementById(`su-${id}`);
 
                 if (!name) {
                     urlEl.textContent = '— (name missing)';
